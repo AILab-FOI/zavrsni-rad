@@ -12,17 +12,18 @@ const OFFSET_FIX = -15
 var max_stamina = 100.0
 var stamina = 100.0
 var max_health = 4
-var health = 3
+var health = 4
 var drain = 25.0
 var regen = 15.0
+var invincible = false
 
 var exhausted = false
-var damage = false
 var attacking = false
 var dead = false
 
 func _ready():
 	update_health_ui()
+	$PlayerHitbox.monitoring = false
 
 func _physics_process(delta: float) -> void:
 	if dead:
@@ -34,15 +35,13 @@ func _physics_process(delta: float) -> void:
 	if health > 0:
 		for i in range(get_slide_collision_count()):
 			var collision = get_slide_collision(i)
-			if collision.get_collider().name == "TileMapSpikes":
-				if not damage:
-					damage = true
-					take_damage(4)
+			var collider = collision.get_collider()
+			if not is_instance_valid(collider):
+				continue
+			if collider.is_in_group("enemy") and not invincible:
+					take_damage(1)
 
-	if damage:
-		damage = false
-
-	if not attacking and not dead:
+	if not attacking and not dead and not invincible:
 		if direction != 0:
 			player.play("walk")
 		else:
@@ -99,17 +98,23 @@ func _physics_process(delta: float) -> void:
 	if direction == 1.0:
 		player.flip_h = false
 		player.offset.x = 0
+		$PlayerHitbox/CollisionShape2D.position.x = 17
 	elif direction == -1.0:
 		player.flip_h = true
 		player.offset.x = OFFSET_FIX
+		$PlayerHitbox/CollisionShape2D.position.x = -14.5
 
-	if Input.is_action_just_pressed("attack") and not attacking and is_on_floor():
+	if Input.is_action_just_pressed("attack") and not attacking and is_on_floor() and player.animation != "hurt":
 		attacking = true
 		player.play("attack")
+		$PlayerHitbox.monitoring = true
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if player.animation == "attack":
 		attacking = false
+		$PlayerHitbox.monitoring = false
+	if player.animation == "hurt":
+		invincible = false
 
 func update_health_ui():
 	health_bar.animation = "health"
@@ -133,11 +138,16 @@ func heal(amount):
 	update_health_ui()
 
 func take_damage(amount):
-	if dead:
+	if dead or invincible:
 		return
+	invincible = true
 	health -= amount
 	health = clamp(health, 0, max_health)
+	player.play("hurt")
 	update_health_ui()
-
 	if health <= 0:
 		die()
+
+func _on_player_hitbox_body_entered(body: Node2D) -> void:
+	if body.has_method("take_damage"):
+		body.take_damage(1)
