@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+@onready var hover: AudioStreamPlayer = $hover
+
 func _ready() -> void:
 	visible = false
 	get_tree().paused = false
@@ -23,3 +25,12 @@ func _on_menu_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+func _on_continue_mouse_entered() -> void:
+	hover.play()
+
+func _on_menu_mouse_entered() -> void:
+	hover.play()
+
+func _on_quit_mouse_entered() -> void:
+	hover.play()

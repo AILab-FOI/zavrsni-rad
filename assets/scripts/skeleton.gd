@@ -1,5 +1,10 @@
 extends CharacterBody2D
 
+@onready var skeleton_death: AudioStreamPlayer = $"../skeleton_death"
+@onready var skeleton_attack: AudioStreamPlayer = $"../skeleton_attack"
+@onready var hit: AudioStreamPlayer = $"../hit"
+@onready var shield: AudioStreamPlayer = $"../shield"
+
 const SPEED = 100.0
 
 var direction = -1.0
@@ -14,17 +19,20 @@ func take_damage(amount):
 	if health <= 0:
 		return
 	if randf() < block_chance:
+		shield.play()
 		$AnimatedSprite2D.play("block")
 		return
 	health -= amount
 	if health <= 0:
 		velocity = Vector2.ZERO
 		set_physics_process(false)
+		skeleton_death.play()
 		$AnimatedSprite2D.play("death")
 		await $AnimatedSprite2D.animation_finished
 		queue_free()
 	else:
 		hurt = true
+		hit.play()
 		$AnimatedSprite2D.play("hurt")
 		await $AnimatedSprite2D.animation_finished
 		hurt = false
@@ -86,5 +94,6 @@ func _on_enemy_hitbox_body_exited(body: Node2D) -> void:
 func _on_animated_sprite_2d_frame_changed() -> void:
 	if $AnimatedSprite2D.animation == "attack":
 		if $AnimatedSprite2D.frame == 6:
+			skeleton_attack.play()
 			if player:
 				player.take_damage(1)

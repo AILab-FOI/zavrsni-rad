@@ -3,6 +3,10 @@ extends CharacterBody2D
 @onready var player: AnimatedSprite2D = $AnimatedSprite2D
 @onready var stamina_bar: AnimatedSprite2D = $AnimatedSprite2D2
 @onready var health_bar: AnimatedSprite2D = $AnimatedSprite2D3
+@onready var hit: AudioStreamPlayer = $"../hit"
+@onready var death: AudioStreamPlayer = $"../death"
+@onready var jump: AudioStreamPlayer = $"../jump"
+@onready var player_attack: AudioStreamPlayer = $"../player_attack"
 
 const WALK_SPEED = 500.0
 const SPRINT_SPEED = 900.0
@@ -12,7 +16,7 @@ const OFFSET_FIX = -15
 var max_stamina = 100.0
 var stamina = 100.0
 var max_health = 4
-var health = 4
+var health = 3
 var drain = 25.0
 var regen = 15.0
 var invincible = false
@@ -52,6 +56,7 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		jump.play()
 
 	if Input.is_action_pressed("sprint") and stamina > 0 and not exhausted and direction != 0 and not is_on_wall() and not attacking:
 		current_speed = SPRINT_SPEED
@@ -98,14 +103,15 @@ func _physics_process(delta: float) -> void:
 	if direction == 1.0:
 		player.flip_h = false
 		player.offset.x = 0
-		$PlayerHitbox/CollisionShape2D.position.x = 17
+		$PlayerHitbox/CollisionShape2D.position.x = 21
 	elif direction == -1.0:
 		player.flip_h = true
 		player.offset.x = OFFSET_FIX
-		$PlayerHitbox/CollisionShape2D.position.x = -14.5
+		$PlayerHitbox/CollisionShape2D.position.x = -18.5
 
 	if Input.is_action_just_pressed("attack") and not attacking and is_on_floor() and player.animation != "hurt":
 		attacking = true
+		player_attack.play()
 		player.play("attack")
 		$PlayerHitbox.monitoring = true
 
@@ -125,6 +131,7 @@ func die():
 		return
 	dead = true
 	health = 0
+	death.play()
 	update_health_ui()
 
 	velocity = Vector2.ZERO
@@ -141,12 +148,16 @@ func take_damage(amount):
 	if dead or invincible:
 		return
 	invincible = true
+	attacking = false
+	$PlayerHitbox.monitoring = false
 	health -= amount
 	health = clamp(health, 0, max_health)
 	player.play("hurt")
 	update_health_ui()
 	if health <= 0:
 		die()
+	else:
+		hit.play()
 
 func _on_player_hitbox_body_entered(body: Node2D) -> void:
 	if body.has_method("take_damage"):
