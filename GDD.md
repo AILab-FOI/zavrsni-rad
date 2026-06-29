@@ -18,6 +18,7 @@ Interakcija s objektima (tipka E)
 Osnovne mehanike uključuju:
 
 Sustav zdravlja (igrač gubi život pri kontaktu s neprijateljima / zamkama)
+
 Sustav stamine (igrač ima ograničenu količinu stamine koja se troši prilikom trčanja)
 
 Igra završava kada igrač dođe do izlaza ili izgubi sve živote.
