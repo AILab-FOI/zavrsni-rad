@@ -80,8 +80,10 @@ func update_facing():
 	$AnimatedSprite2D.flip_h = direction < 0
 	if direction > 0:
 		$EnemyHitbox/CollisionShape2D.position.x = abs($EnemyHitbox/CollisionShape2D.position.x)
+		$RayCast2D.position.x = abs($RayCast2D.position.x)
 	else:
 		$EnemyHitbox/CollisionShape2D.position.x = -abs($EnemyHitbox/CollisionShape2D.position.x)
+		$RayCast2D.position.x = -abs($RayCast2D.position.x)
 
 func _on_enemy_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
