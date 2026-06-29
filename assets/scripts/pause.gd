@@ -34,3 +34,10 @@ func _on_menu_mouse_entered() -> void:
 
 func _on_quit_mouse_entered() -> void:
 	hover.play()
+
+func _on_pause_pressed() -> void:
+	visible = true
+	get_tree().paused = true
+
+func _on_pause_mouse_entered() -> void:
+	hover.play()
