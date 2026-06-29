@@ -7,10 +7,11 @@ extends CharacterBody2D
 @onready var death: AudioStreamPlayer = $"../death"
 @onready var jump: AudioStreamPlayer = $"../jump"
 @onready var player_attack: AudioStreamPlayer = $"../player_attack"
+@onready var pause: TextureButton = $pause
 
 const WALK_SPEED = 500.0
 const SPRINT_SPEED = 900.0
-const JUMP_VELOCITY = -1000.0
+const JUMP_VELOCITY = -1200.0
 const OFFSET_FIX = -15
 
 var max_stamina = 100.0
@@ -19,8 +20,8 @@ var max_health = 4
 var health = 3
 var drain = 25.0
 var regen = 15.0
-var invincible = false
 
+var invincible = false
 var exhausted = false
 var attacking = false
 var dead = false
