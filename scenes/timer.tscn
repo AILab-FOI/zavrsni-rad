@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c3837kd7brat7"]
+
+[ext_resource type="Script" uid="uid://dxuwskyojvmu4" path="res://scripts/timer.gd" id="1_srplv"]
+
+[node name="Control" type="Control" unique_id=1352153659]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_srplv")
+
+[node name="Label" type="Label" parent="." unique_id=1518683822]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -127.5
+offset_top = 30.0
+offset_right = 127.5
+offset_bottom = 118.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 64
+text = "00:00:00"
