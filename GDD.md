@@ -13,7 +13,7 @@ Igrač upravlja likom koristeći osnovne kontrole:
 Hodanje (tipke A / strelica lijevo i D / strelica desno)
 Skakanje (tipka W / strelica gore)
 Trčanje (tipka SHIFT)
-Interakcija s objektima (tipka E)
+Napad (tipka K)
 
 Osnovne mehanike uključuju:
 
@@ -29,8 +29,8 @@ Istraživač istražuje duboke i skrivene dijelove pećine kada iznenada dolazi 
 
 ## 4. Vizualni stil i zvuk
 
-Vizualni stil je 2D pixel art s tamnom atmosferom i naglaskom na kontrast svijetla i tame. Zvukovi uključuju ambijentalne efekte poput kapljanja vode, zvukove kretanja neprijatelja te slične okolišne zvukove, uz glazbu u pozadini.
+Vizualni stil je 2D pixel art s tamnom atmosferom i naglaskom na kontrast svijetla i tame. Zvukovi uključuju efekte poput kretanja neprijatelja, uz glazbu u pozadini.
 
 ## 5. Korisničko sučelje
 
-Korisničko sučelje (UI - User Interface) sastoji se od glavnog izbornika koji uključuje početak igre, nastavak igre (ako je igrač stigao do određenog checkpointa), postavke igre i izlazak iz igre. Tijekom igranja igraču se prikazuje status zdravlja i stamine.
+Korisničko sučelje (UI - User Interface) sastoji se od glavnog izbornika koji uključuje početak igre i izlazak iz igre. Tijekom igranja igraču se prikazuje status zdravlja i stamine.
